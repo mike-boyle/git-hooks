@@ -1,0 +1,11 @@
+#!/usr/bin/env ruby
+
+maximum_line_length = 72
+message_file = ARGV[0]
+message = File.read(message_file).lines.to_a.select { |line| !line.start_with?("#") }.join
+if /\A.{1,#{maximum_line_length}}(\n(\n.{0,#{maximum_line_length}})*)?\Z/o.match(message) == nil
+  puts "Invalid commit message"
+  exit 1
+end
+
+exit 0
