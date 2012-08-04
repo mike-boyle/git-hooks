@@ -20,15 +20,14 @@ for FILE in `exec git diff-index --check --cached $against -- | sed '/^[+-]/d' |
 done
 
 # Ignore things that aren't staged.
-git stash save --keep-index
+git stash save --keep-index --include-untracked
 
 # Run the tests and capture the result
 nant test
 RESULT=$?
 
 # Restore the working tree to its previous state
-git reset --hard HEAD
-git stash pop -q
+git stash pop
 
 # Do not allow the commit if the tests failed.
 [ $RESULT -ne 0 ] && exit 1
